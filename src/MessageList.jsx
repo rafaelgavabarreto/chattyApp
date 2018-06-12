@@ -6,12 +6,10 @@ class MessageList extends Component {
     return (
       <main className="messages">
         {
-          this.props.messages.map((chattyObj, index) =>
-            <Message index= {index}
-            chattyUsername= {chattyObj.username}
-            chattyMessage={chattyObj.content} />)
+          this.props.messages.map(chattyObj =>
+            <Message chattyUsername= {chattyObj.username}
+                     chattyMessage = {chattyObj.content} />)
         }
-        <div className="message system"/>
       </main>
         )}
   }
