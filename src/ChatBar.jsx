@@ -21,7 +21,7 @@ class ChatBar extends Component {
 
   handleSubmit = (event) => {
     if(event.key === 'Enter') {
-      this.props.handleNewMessage(this.state);
+      this.props.addMessage(this.state);
       this.setState({content:''});
     }
   }
@@ -33,12 +33,12 @@ class ChatBar extends Component {
       <footer className="chatbar">
 
         <input className="chatbar-username"
-          value={this.state.username}
+          value={this.state.username || ''}
           onChange={this.handleUsername}
           onKeyPress={this.handleSubmit}/>
 
         <input className="chatbar-message" placeholder="Type a message and hit ENTER"
-          value={this.state.content}
+          value={this.state.content || ''}
           onChange={this.handleContent}
           onKeyPress={this.handleSubmit}/>
 

@@ -20,21 +20,25 @@ class App extends Component {
 
   // Set initial state so the component is initially "loading"
   constructor(props) {
-    super(props);
+    this.state = {
+      currentUser: {name: "Bob"},
+      messages: [] // messages coming from the server will be stored here as they arrive
+    };
     // this is the *only* time you should assign directly to state:
     // this.state = { loading: true };
-    this.handleNewMessage = this.handleNewMessage.bind(this);
+    this.addMessage = this.addMessage.bind(this);
     this.state = chattyData;
-    this.message = this.message.bind(this);
-    this.connection = new WebSocket("ws://localhost:3001");
+    // this.userMessage = this.message.bind(this);
+    this.userMessage = this.userMessage.bind(this);
+    this.WSconn = new WebSocket("ws://localhost:3001");
   }
 
-  message(m) {
-    this.connection.send(JSON.stringify(m));
-    console.log("message",m);
+  userMessage(message) {
+    this.WSconn.send(JSON.stringify(message));
+    console.log("message from user",message);
   }
 
-  handleNewMessage = (chattyNewMessage) => {
+  addMessage = (chattyNewMessage) => {
 
     const newMessage = {username: chattyNewMessage.username, content: chattyNewMessage.content};
 
@@ -42,7 +46,7 @@ class App extends Component {
 
     this.setState({messages});
 
-    this.message({message:chattyNewMessage});
+    this.userMessage({message:chattyNewMessage});
 
   }
 
@@ -67,7 +71,7 @@ class App extends Component {
           </nav>
           <MessageList messages={this.state.messages}/>
           <ChatBar currentUser={this.state.currentUser.name}/>
-          <ChatBar handleNewMessage={this.handleNewMessage}
+          <ChatBar addMessage={this.addMessage}
            currentUser={this.state.currentUser}
            onEnter={this.handleSubmit}/>
         </div>
