@@ -25,6 +25,13 @@ class App extends Component {
     // this.state = { loading: true };
     this.handleNewMessage = this.handleNewMessage.bind(this);
     this.state = chattyData;
+    this.message = this.message.bind(this);
+    this.connection = new WebSocket("ws://localhost:3001");
+  }
+
+  message(m) {
+    this.connection.send(JSON.stringify(m));
+    console.log("message",m);
   }
 
   handleNewMessage = (chattyNewMessage) => {
@@ -34,6 +41,8 @@ class App extends Component {
     const messages = this.state.messages.concat([newMessage]);
 
     this.setState({messages});
+
+    this.message({message:chattyNewMessage});
 
   }
 
