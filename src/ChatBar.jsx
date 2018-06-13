@@ -12,6 +12,13 @@ class ChatBar extends Component {
   }
 
   handleUsername = (event) => {
+    if(event.key === 'Enter') {
+      this.props.currentUser(this.state);
+      this.setState({username: event.target.value});
+    }
+  }
+
+  handleUsernameChange = (event) => {
     this.setState({username: event.target.value});
   }
 
@@ -26,7 +33,6 @@ class ChatBar extends Component {
     }
   }
 
-
   render() {
 
     return (
@@ -34,10 +40,11 @@ class ChatBar extends Component {
 
         <input className="chatbar-username"
           value={this.state.username || ''}
-          onChange={this.handleUsername}
+          onChange={this.handleUsernameChange}
           onKeyPress={this.handleSubmit}/>
 
-        <input className="chatbar-message" placeholder="Type a message and hit ENTER"
+        <input className="chatbar-message"
+          placeholder="Type a message and hit ENTER"
           value={this.state.content || ''}
           onChange={this.handleContent}
           onKeyPress={this.handleSubmit}/>
