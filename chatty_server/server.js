@@ -25,11 +25,6 @@ wss.broadcast = function broadcast(data) {
         console.log('Message sent from user to server');
     });
 };
-// wss.broadcast(onlineUsers);
-
-function getRandomColor() {
-  return '#'+Math.random().toString(16).substr(-6);
-};
 
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
@@ -40,6 +35,7 @@ wss.on('connection', (ws) => {
   ws.on('message', (ws) => {
     console.log('received message:', JSON.parse(ws));
     const userMessage = JSON.parse(ws);
+    console.log('usernmessage',userMessage);
     switch(userMessage.message.type) {
         case "postNotification": {
             wss.broadcast({

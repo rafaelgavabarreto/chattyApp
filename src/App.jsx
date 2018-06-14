@@ -4,12 +4,19 @@ import ChatBar from './ChatBar.jsx';
 
 const chattyData = {
   currentUser: {
-    name: "Anonymous"
+    name: "Anonymous",
+    color: "#a3fd7f"
   }, // optional. if currentUser is not defined, it means the user is Anonymous
   messages: []
 }
 
 var usersOnLine = 0;
+
+function getRandomColor() {
+  return '#'+Math.random().toString(16).substr(-6);
+};
+
+var newColor = getRandomColor();
 
 class App extends Component {
 
@@ -27,7 +34,8 @@ class App extends Component {
 
   componentDidMount() {
     this.WSconn.onopen = (event) => {
-      console.log('Connected to server')
+      console.log('Connected to server');
+      usersOnLine = chattyData.onlineUsers;
     }
 
     this.WSconn.onmessage = (event) => {
@@ -62,13 +70,14 @@ class App extends Component {
   }
 
   addMessage = (message) => {
+    console.log(message);
 
     if(this.state.currentUser.name !== message.username) {
       const notification = {type:"postNotification", content: `${this.state.currentUser.name} changed their name to ${message.username}`};
       this.state.currentUser.name = message.username;
       this.userMessage({message: notification});
     }
-    const newMessage = {type: "postMessage", username: message.username, content: message.content};
+    const newMessage = {type: "postMessage", username: message.username, content: message.content, color: newColor};
     this.userMessage({message: newMessage});
   }
 
@@ -81,7 +90,8 @@ class App extends Component {
               usersOnLine ? <a className="navbar-brand"> {usersOnLine} users online</a> : <a className="navbar-brand"> 0 users online</a>
             }
           </nav>
-          <MessageList messages={this.state.messages}/>
+          <MessageList messages={this.state.messages}
+          users={this.state.users}/>
           <ChatBar addMessage={this.addMessage}
            currentUser={this.state.currentUser}
            />

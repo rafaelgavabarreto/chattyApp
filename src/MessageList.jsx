@@ -11,10 +11,12 @@ class MessageList extends Component {
           this.props.messages.map( message => {
             if (message.type === 'incomingNotification') {
               return <Notification key={message.id}
+              chattyUsernameColor={message.color}
               content={message.content}/>
             } else {
               return <Message key={message.id}
               chattyUsername={message.username}
+              chattyUsernameColor={message.color}
               chattyMessage={message.content}/>
             }
           })
