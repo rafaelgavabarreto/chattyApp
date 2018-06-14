@@ -48,13 +48,13 @@ class App extends Component {
       switch(chattyData.type) {
         case "IncomingMessage": {
           this.setState({
-            messages: this.state.messages.concat(chattyData);
+            messages: this.state.messages.concat(chattyData)
           })
         }
           break;
         case "IncomingNotification": {
           this.setState({
-            messages: this.state.messages.concat(chattyData);
+            messages: this.state.messages.concat(chattyData)
           })
         }
           break;
