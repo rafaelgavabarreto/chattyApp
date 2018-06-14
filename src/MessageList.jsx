@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Message from './Message.jsx';
 import Notification from './Notification.jsx';
 
+// send information do message to display to the user
 class MessageList extends Component {
   render() {
     return (

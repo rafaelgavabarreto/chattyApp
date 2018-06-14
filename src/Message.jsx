@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+//last passage.. this will be display to the user
 class Message extends Component {
   render() {
     return (

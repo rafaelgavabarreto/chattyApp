@@ -12,6 +12,7 @@ const chattyData = {
 
 var usersOnLine = 0;
 
+// Generate a random color for username
 function getRandomColor() {
   return '#'+Math.random().toString(16).substr(-6);
 };
@@ -64,14 +65,14 @@ class App extends Component {
     }
   }
 
+  // receive a nwq message from user
   userMessage(message) {
     this.WSconn.send(JSON.stringify(message));
     console.log("message from user",message);
   }
 
+  // Add a new message in system
   addMessage = (message) => {
-    console.log(message);
-
     if(this.state.currentUser.name !== message.username) {
       const notification = {type:"postNotification", content: `${this.state.currentUser.name} changed their name to ${message.username}`};
       this.state.currentUser.name = message.username;

@@ -35,7 +35,7 @@ wss.on('connection', (ws) => {
   ws.on('message', (ws) => {
     console.log('received message:', JSON.parse(ws));
     const userMessage = JSON.parse(ws);
-    console.log('usernmessage',userMessage);
+
     switch(userMessage.message.type) {
         case "postNotification": {
             wss.broadcast({

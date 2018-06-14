@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+//Class of notification
 class Notification extends Component {
     render() {
         return (
