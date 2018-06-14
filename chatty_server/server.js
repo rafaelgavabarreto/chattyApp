@@ -15,12 +15,20 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
-wss.connection = function connection(data) {
-    console.log("HI there!");
+// Variable to count users into the system
+var onlineUsers = wss.clients.size;
+
+wss.broadcast = function broadcast(data) {
     wss.clients.forEach(user => {
         user.send(JSON.stringify(data));
+        onlineUsers = wss.clients.size;
         console.log('Message sent from user to server');
     });
+};
+// wss.broadcast(onlineUsers);
+
+function getRandomColor() {
+  return '#'+Math.random().toString(16).substr(-6);
 };
 
 // Set up a callback that will run when a client connects to the server
@@ -28,14 +36,37 @@ wss.connection = function connection(data) {
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
-
+  
   ws.on('message', (ws) => {
     console.log('received message:', JSON.parse(ws));
     const userMessage = JSON.parse(ws);
-    userMessage.message['id'] = uuid.v4();
-    wss.connection(userMessage);
+    switch(userMessage.message.type) {
+        case "postNotification": {
+            wss.broadcast({
+                id: uuid.v4(),
+                ...userMessage.message,
+                type: "IncomingNotification",
+                onlineUsers
+            });
+            break;
+        }
+        case "postMessage": {
+            wss.broadcast({
+                id: uuid.v4(),
+                ...userMessage.message,
+                type: "IncomingMessage",
+                onlineUsers
+            });
+            break;
+        }
+        default:
+          throw new Error(`Event type undefined ${userMessage.message.type}`);
+    }
   });
   
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+      console.log('Client disconnected');
+      wss.broadcast(onlineUsers);
+  });
 });

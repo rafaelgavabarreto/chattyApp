@@ -4,8 +4,9 @@ class ChatBar extends Component {
     constructor(props) {
     super();
 
-    this.state = {username: props.currentUser.username, content: ''}
+    this.state = {username: props.currentUser.name, content: ''}
 
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handleContent = this.handleContent.bind(this);
     this.handleUsername = this.handleUsername.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,7 +38,7 @@ class ChatBar extends Component {
 
     return (
       <footer className="chatbar">
-
+      
         <input className="chatbar-username"
           value={this.state.username || ''}
           onChange={this.handleUsernameChange}
